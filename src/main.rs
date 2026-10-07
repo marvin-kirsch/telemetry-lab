@@ -21,9 +21,9 @@ impl Display for Reading {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 struct TemperatureSummary {
-    count: u32,
+    count: usize,
     min: f64,
     max: f64,
     average: f64,
@@ -48,7 +48,7 @@ fn summarize(readings: &[Reading]) -> Option<TemperatureSummary> {
     let sum: f64 = readings.iter().map(|r| r.sim_temperature).sum();
 
     Some(TemperatureSummary {
-        count: count.try_into().unwrap(),
+        count,
         min: readings
             .iter()
             .map(|r| r.sim_temperature)
@@ -59,6 +59,27 @@ fn summarize(readings: &[Reading]) -> Option<TemperatureSummary> {
             .max_by(f64::total_cmp)?,
         average: sum / count as f64,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn empty() {
+        let mut test_readings: Vec<Reading> = vec![];
+        let result = summarize(&test_readings);
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn one_element() {
+        let mut test_readings Vec<Reading> = vec![];
+        let test_reading: Reading = {
+            sim_temperature:,
+
+        }
+    }
 }
 
 fn main() {
@@ -82,8 +103,9 @@ fn main() {
 
     println!("{}", readings.iter().len());
 
-    let average_et: Duration = readings.last().unwrap().elapsed_time
-        - readings.first().unwrap().elapsed_time / readings.len() as u32;
+   let average_et: Duration = (readings.last().unwrap().elapsed_time
+        - readings.first().unwrap().elapsed_time)
+        / (readings.len() as u32 - 1);
     println!("average_et: {}", average_et.as_millis());
 
     let summary: TemperatureSummary =
