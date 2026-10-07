@@ -41,7 +41,7 @@ impl Display for TemperatureSummary {
 
 fn summarize(readings: &[Reading]) -> Option<TemperatureSummary> {
     if readings.is_empty() {
-        None::<TemperatureSummary>;
+        return None;
     }
 
     let count = readings.len();
@@ -81,13 +81,10 @@ fn main() {
     }
 
     println!("{}", readings.iter().len());
-    let sum_temp: f64 = readings.iter().map(|r| r.sim_temperature).sum();
-    let average_temp = sum_temp / readings.len() as f64;
 
     let average_et: Duration = readings.last().unwrap().elapsed_time
         - readings.first().unwrap().elapsed_time / readings.len() as u32;
     println!("average_et: {}", average_et.as_millis());
-    println!("average_temp: {}", average_temp);
 
     let summary: TemperatureSummary =
         summarize(&readings).expect("If there is nothing, just write nothing?");
